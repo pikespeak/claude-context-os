@@ -40,10 +40,16 @@ If you ask Claude to "summarize what we've done," you get prose. And prose trigg
 ## What's in the box
 
 ```
-CLAUDE.md              (~3.5K tokens) — the operating system
+CLAUDE.md                    (~3.5K tokens) — the operating system
 templates/
-  claude-templates.md  (on-demand only) — 5 templates, 3 subagent
-                        contracts, 3 workflow phases
+  claude-templates.md        (on-demand only) — light + full templates,
+                              3 subagent contracts, 4 workflow phases
+.claude/commands/
+  handoff.md                 /handoff — end a session cleanly
+  process-doc.md             /process-doc — summarize an input document
+  status.md                  /status — check project state
+examples/
+  software-dev-project/      worked example with filled-in templates
 ```
 
 The core file is ~3.5K tokens. The templates are explicitly marked "do NOT read at session start" — they only get loaded when you need one. So they don't eat your window.
@@ -59,13 +65,15 @@ The core file is ~3.5K tokens. The templates are explicitly marked "do NOT read 
 
 ## Templates
 
-| Template | What it's for |
-|---|---|
-| **Source Document Summary** | Processing input docs — explicit fields for exact numbers, requirements as IF/THEN/BUT/EXCEPT, decisions with rationale, uncertainty markers |
-| **Analysis/Research Summary** | Research outputs — evidence tables, confidence levels, conditional conclusions, scope boundaries |
-| **Decision Record** | What was decided, why, what was rejected, when to revisit |
-| **Session Handoff** | Transferring state between sessions — file paths, work in progress, open questions, what NOT to re-read |
-| **Project Brief** | Starting a new project — client info, success criteria, input tracking, phase status |
+Two tiers — use **light** for quick projects (under 5 sessions), **full** for longer engagements:
+
+| Template | Light (3 fields) | Full (8 fields) |
+|---|---|---|
+| **Source Document Summary** | Key facts, numbers, open items | + requirements as IF/THEN/BUT/EXCEPT, decisions with rationale, cross-doc relationships, verbatim quotes |
+| **Session Handoff** | Done, next steps, don't re-read | + exact numbers, conditional logic, assumptions, open questions |
+| **Decision Record** | Chose X because Y, rejected Z | + quantified impact, conditions, stakeholder input, downstream effects |
+| **Analysis/Research Summary** | Full version only | Evidence tables, confidence levels, conditional conclusions, scope boundaries |
+| **Project Brief** | Full version only | Project setup, success criteria, input tracking, phase status |
 
 ## Session handoffs
 
@@ -91,10 +99,13 @@ Things go wrong. The CLAUDE.md has procedures for:
 
 1. Copy `CLAUDE.md` to your project root
 2. Copy the `templates/` directory
-3. Edit the Identity section at the top for your workflow
-4. Start a Claude Code session
+3. Copy the `.claude/commands/` directory (for `/handoff`, `/process-doc`, `/status` commands)
+4. Edit the Identity section at the top of `CLAUDE.md` for your workflow
+5. Start a Claude Code session
 
 That's it. No dependencies, no install.
+
+Check `examples/software-dev-project/` to see what filled-in templates look like in practice.
 
 ## Who this is for
 
@@ -109,6 +120,8 @@ project-root/
 ├── CLAUDE.md                          ← the OS (~3.5K tokens)
 ├── templates/
 │   └── claude-templates.md            ← loaded on-demand only
+├── .claude/
+│   └── commands/                      ← slash commands (/handoff, /process-doc, /status)
 ├── docs/
 │   ├── discovery/                     ← raw inputs
 │   ├── research/                      ← research sources
@@ -140,7 +153,7 @@ Designed for Claude Code and desktop, which have filesystem access. The ideas �
 Yes. This manages sessions and context. Your project-level CLAUDE.md handles project-specific rules. They coexist fine.
 
 **This seems like overkill.**
-For a single conversation, it is. For multi-week projects where a lost session costs you two hours of re-work, it pays for itself immediately.
+For a single conversation, it is. For 2-5 session projects, use the lightweight templates — three fields each, minimal overhead. For multi-week projects where a lost session costs you two hours of re-work, the full templates pay for themselves immediately.
 
 **Why not just tell Claude to "summarize better"?**
 Because that triggers the exact same compression that caused the problem. Structured fields — CONFIRMED vs. OPEN vs. ASSUMED, exact numbers with sources, IF/THEN/BUT/EXCEPT — mechanically prevent it. It's an engineering fix, not a prompt.

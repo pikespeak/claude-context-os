@@ -2,7 +2,10 @@
 docs/summaries/
 docs/archive/
 output/
-.claude/
+
+# .claude runtime state (but NOT .claude/commands/ — those ship with the repo)
+.claude/agents/
+.claude/settings*
 
 # OS files
 .DS_Store

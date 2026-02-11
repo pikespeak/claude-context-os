@@ -4,9 +4,79 @@
 
 ---
 
+## Lightweight Templates (Projects Under 5 Sessions)
+
+For smaller projects — quick coding tasks, short research, bug investigations — the full templates below are overkill. Use these instead.
+
+### Light Source Summary
+
+**Write to:** `./docs/summaries/source-[filename].md`
+
+```markdown
+# Source: [Document Name]
+**Processed:** [YYYY-MM-DD] | **Confidence:** [high/medium/low]
+
+## Key Facts & Numbers
+- [fact or metric]: [exact value]
+- [fact or metric]: [exact value]
+
+## Requirements (IF/THEN format)
+- IF [condition] THEN [requirement] — priority: [must/should/nice]
+
+## Open Items
+- OPEN: [unresolved question]
+- ASSUMED: [assumption made] — verify with [whom/how]
+```
+
+### Light Session Handoff
+
+**Write to:** `./docs/summaries/handoff-[YYYY-MM-DD]-[topic].md`
+
+```markdown
+# Handoff: [Topic]
+**Date:** [YYYY-MM-DD] | **Focus:** [one sentence]
+
+## Done
+- [what was completed] → `[file path]`
+
+## In Progress
+- [what's mid-stream] — stopped at [specific point], next: [specific action]
+
+## Next Session Should
+1. [specific action with file paths]
+2. [specific action]
+
+## Open Questions
+- [ ] [question] — impacts [what]
+
+## Don't Re-Read
+- `[file]` — summarized in `[summary file]`
+```
+
+### Light Decision Record
+
+**Write to:** `./docs/summaries/decision-[number]-[topic].md`
+
+```markdown
+# Decision: [What Was Decided]
+**Date:** [YYYY-MM-DD] | **Status:** CONFIRMED / PROVISIONAL
+
+- CHOSE: [option] BECAUSE [reason]
+- REJECTED: [alternative] BECAUSE [reason]
+- REVISIT IF: [trigger condition]
+```
+
+> **When to upgrade to full templates:** If your project grows past 5 sessions, has multiple stakeholders, or involves processing 4+ documents — switch to the full templates below. The light versions don't capture cross-document relationships, stakeholder input, or detailed conditional logic.
+
+---
+
+## Full Templates
+
+---
+
 ## Template 1: Source Document Summary
 
-**Use when:** Processing any input document (client brief, research report, requirements doc, existing proposal)
+**Use when:** Processing any input document (requirements spec, research report, design doc, brief, proposal)
 
 **Write to:** `./docs/summaries/source-[filename].md`
 
@@ -57,8 +127,8 @@
 - MISSING: [information referenced but not provided]
 
 ## Verbatim Quotes Worth Preserving
-<!-- 2-5 direct quotes that capture stakeholder language, priorities, or constraints
-     These are critical for proposals — use the client's own words back to them -->
+<!-- 2-5 direct quotes that capture key language, priorities, or constraints.
+     Useful for aligning deliverables with the original author's intent. -->
 - "[exact quote]" — [speaker/author], [context]
 ```
 
@@ -232,19 +302,18 @@
 **Created:** [YYYY-MM-DD]
 **Last Updated:** [YYYY-MM-DD]
 
-## Client
-- **Name:** [client name]
-- **Industry:** [industry]
-- **Size:** [employee count / revenue if known]
-- **Relationship:** [through your company / partner channel / direct / other]
-- **Key Contacts:** [names and roles if known]
+## Project Owner
+- **Name:** [your name / team name]
+- **Domain:** [industry, field, or tech stack]
+- **Context:** [solo / team / client work — any relevant background]
+- **Key Contacts:** [collaborators, stakeholders, or reviewers if any]
 
-## Engagement
-- **Type:** [proposal / workshop / competitive analysis / agent development / hybrid]
+## Project
+- **Type:** [software development / research / writing / consulting / agent development / other]
 - **Scope:** [one paragraph description]
 - **Target Deliverable:** [specific output expected]
 - **Timeline:** [deadline if known]
-- **Budget Context:** [if known — exact figures]
+- **Resource Context:** [budget, compute, team size — if relevant]
 
 ## Input Documents
 | Document | Path | Processed? | Summary At |
@@ -370,7 +439,39 @@ STRENGTHS:
 
 ## Phase-Based Workflow Templates
 
-### Template A: Enterprise Sales Deliverable
+### Template A: Software Development
+
+```
+Phase 1: Discovery & Design
+├── Process requirements, specs, existing code docs → Source Summaries
+├── Identify unknowns and technical constraints → flag as OPEN items
+├── Create Decision Records for architecture/tool choices
+├── Write: ./docs/summaries/01-design-complete.md (Handoff Template)
+├── → Suggest new session for Phase 2
+
+Phase 2: Core Implementation
+├── Read summaries + design decisions only (NOT raw specs)
+├── Implement core logic and data layer
+├── Write tests for critical paths
+├── Write: ./docs/summaries/02-core-complete.md (Handoff Template)
+├── → Suggest new session for Phase 3
+
+Phase 3: Integration & Edge Cases
+├── Read implementation handoff + decision records only
+├── Wire up remaining components, APIs, UI
+├── Handle error cases, validation, edge cases
+├── Write: ./docs/summaries/03-integration-complete.md (Handoff Template)
+├── → Suggest new session for Phase 4
+
+Phase 4: Testing & Polish
+├── Read integration handoff + original requirements summary
+├── Comprehensive test coverage
+├── Performance validation against requirements
+├── Documentation, cleanup, deployment setup
+├── QA check against original spec using Review/QA Output Contract
+```
+
+### Template B: Enterprise Sales / Consulting Deliverable
 
 ```
 Phase 1: Discovery & Input Processing
@@ -402,7 +503,7 @@ Phase 4: Review & Polish
 ├── Output final version to: ./output/deliverables/
 ```
 
-### Template B: Agent/Application Development
+### Template C: Agent/Application Development
 
 ```
 Phase 1: Requirements → Spec
@@ -438,7 +539,7 @@ Phase 4: Assembly → Package
 ├── QA check against original spec using Review/QA Output Contract
 ```
 
-### Template C: Hybrid (Sales + Agent Development)
+### Template D: Hybrid (Sales + Agent Development)
 
 ```
 Phase 1: Client Discovery → Summaries

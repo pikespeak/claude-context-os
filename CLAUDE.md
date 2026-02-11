@@ -10,7 +10,7 @@
 
 You are working with **[Your Name]**, a [your role — e.g., software engineer, consultant, researcher, product manager]. Work spans:
 
-1. **[Domain 1]**: [Describe your primary work domain — e.g., "Enterprise consulting: proposals, workshops, competitive analysis, client deliverables"]
+1. **[Domain 1]**: [Describe your primary work domain — e.g., "Backend development: APIs, databases, infrastructure"]
 2. **[Domain 2]**: [Describe your secondary domain, or remove this line if you have only one]
 
 ### Communication Rules
@@ -35,7 +35,7 @@ You are working with **[Your Name]**, a [your role — e.g., software engineer, 
 
 Read this file completely. Then check if `./docs/summaries/` exists.
 
-- **If `./docs/summaries/` exists**: Read all files in it. These are compressed state from previous sessions. This is your primary context — do NOT read source documents unless specifically needed for the current task.
+- **If `./docs/summaries/` exists**: Read `00-project-brief.md` and the **latest** `handoff-*.md` file only. These give you project context and current state. Read other summary files on-demand as the current task requires — do NOT bulk-read them all. Do NOT read source documents unless specifically needed.
 - **If `./docs/summaries/` does not exist**: This is a new project. Proceed to Step 2.
 
 ### Step 2: Project Initialization (New Projects Only)
@@ -49,8 +49,8 @@ mkdir -p templates .claude/agents .claude/commands
 ```
 
 Then ask the user:
-1. What is the project name and client?
-2. What type of engagement? (proposal / workshop / competitive analysis / agent development / hybrid)
+1. What is the project name?
+2. What type of project? (software development / research / writing / consulting / agent development / other)
 3. What documents or inputs do you have to start?
 4. What is the target deliverable?
 
@@ -168,6 +168,8 @@ Claude's default summarization loses five categories of information:
 
 **CRITICAL**: When filling templates, use the structured fields — NOT natural prose. Prose triggers the exact compression behaviors the templates prevent.
 
+**Template tiers**: For short projects (under 5 sessions), use the **Lightweight Templates** at the top of `templates/claude-templates.md` — they have 3 fields instead of 8. For multi-week projects with multiple documents or stakeholders, use the **Full Templates**. When in doubt, start light — you can upgrade mid-project.
+
 **For all summary, handoff, decision, analysis, and project brief templates**: Read `templates/claude-templates.md`.
 
 ---
@@ -241,8 +243,8 @@ Before delivering any output to the user, verify:
 - [ ] Does this output match what was actually requested? (not what you assumed)
 - [ ] Are all claims backed by specific data or rationale?
 - [ ] Is the language direct and active voice? (no "it should be noted that...")
-- [ ] For proposals/client materials: Is ROI or business impact quantified with EXACT numbers?
-- [ ] For schemas/prompts: Are all fields defined and all edge cases addressed?
+- [ ] For proposals/business materials: Is ROI or impact quantified with EXACT numbers?
+- [ ] For code/schemas/prompts: Are all fields defined and edge cases addressed?
 - [ ] Have you written a summary file for this session's work?
 - [ ] Are all open questions explicitly marked as OPEN/ASSUMED, not silently resolved?
 - [ ] Do any decisions reference their rationale and rejected alternatives?
@@ -270,6 +272,9 @@ Tell the user upfront: "This task involves processing [X files / Y tokens]. I re
 
 | Command | When to Use |
 |---------|-------------|
+| `/handoff` | End a session cleanly — writes structured handoff to disk |
+| `/process-doc [path]` | Process an input document into a structured summary |
+| `/status` | Check current project state, phase, and open items |
 | `/compact` | At 60-70% context. ALWAYS write handoff first. |
 | `/compact keep: [specifics]` | Preserve particular details through compaction |
 | `/clear` | Starting a genuinely new task |
@@ -289,10 +294,10 @@ project-root/
 ├── templates/
 │   └── claude-templates.md            ← Summary, handoff, decision, output contract templates
 ├── docs/
-│   ├── discovery/                     ← Raw client inputs, briefs, requirements
-│   ├── research/                      ← Market research, competitive analysis sources
+│   ├── discovery/                     ← Raw inputs, briefs, requirements, specs
+│   ├── research/                      ← Research sources, references, prior art
 │   ├── requirements/                  ← Structured requirements (from discovery)
-│   ├── strategy/                      ← Positioning, value props, go-to-market
+│   ├── strategy/                      ← Design decisions, architecture, approach
 │   ├── archive/                       ← Processed raw files (DO NOT read unless told)
 │   │   └── handoffs/                  ← Superseded session handoffs
 │   └── summaries/                     ← ALL active session state lives here
