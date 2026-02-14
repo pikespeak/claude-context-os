@@ -1,6 +1,6 @@
 # Claude Context OS v4
 
-> Your CLAUDE.md shouldn't explain itself. It should just work.
+> New CLAUDE.md that solves the compaction/context loss problem and mimics persistent memory through effective session handoff in token efficient manner
 
 ---
 
